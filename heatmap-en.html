@@ -1,0 +1,217 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+    <script src="https://code.highcharts.com/highcharts.js"></script>
+    <script src="https://code.highcharts.com/modules/heatmap.js"></script>
+  </head>
+
+<style>
+body {
+  font-family: 'Open Sans', 'Helvetica Neue', Helvetica, Verdana, Arial, sans-serif;
+  font-size: 112.5%;
+  line-height: 1.5em;
+  color: #666666;
+      }  
+
+#wrapper {
+    border:1px solid #D3D3D3;
+    max-width: 600px;  /*INPUT: set the width of the chart*/
+    margin: 0 auto;
+}
+
+#container{
+    height: 270px;  /*INPUT: set the height of the chart*/
+    max-width: 100%;
+}
+
+.head {padding:10px 10px;}
+
+.note {
+    font-size: 11px;
+    line-height: 14px;
+    padding:0px 10px 10px 10px;
+}
+
+#credit {
+    font-size: 10px;
+    padding-top: 10px;
+    text-align: right;
+}
+
+.headline {
+    font-size: 18px;
+    font-weight: normal;
+    padding-bottom: 10px;
+    padding-top: 10px;
+    color: #33333c;
+    line-height: 24px;
+}
+
+.text, .legend_text {
+    font-size: 14px;
+    font-weight: normal;
+    line-height: 18px;
+}
+.legend_row{display: flex;flex-direction: row; margin:10px;}
+.legend_text, .color_box {
+  align-items: center;
+}
+
+.color_box {
+  height:20px;
+  width:20px;
+}
+#pink { background-color: #c877b6;}
+#green { background-color: #b6c877;}
+.legend_text {margin-left:5px;}
+
+.highcharts-label span{
+  font-weight: normal !important;
+  text-align: center;
+}
+
+.highcharts-tooltip span {
+  width: 200px !important;
+  white-space: normal !important;
+}
+
+@media (max-width: 400px ) { 
+    .headline {font-size: 16px; line-height: 20px; padding-bottom: 0px;}
+    #text {font-size: 12px;line-height: 14px;padding-bottom: 3px;}
+}  
+
+</style>
+<body>
+<div id="wrapper"> 
+    <div class="head">
+        <div class="headline">Profile of Camvert's frontline managers</div>
+        <div class="text">This chart highlights the connections among the main managers of Camvert and the logging companies SextransBois, BoisCam and SCIEB.</div> 
+        <div class="text">Tap the boxes for more information.</div> 
+    </div>   
+    <div id="container"></div>
+    <div id="legend_box">
+      <div class="legend_row"><div class="color_box" id="pink"></div><div class="legend_text">Current position</div>
+      <div class="legend_row"></div><div class="color_box" id="green"></div><div class="legend_text">Previous position</div></div>
+    </div>
+</div>
+</body>
+
+<script>
+$(function () {
+    var fontsize = '14px';
+    if($(window).width() < 500){fontsize = '12px';}  
+
+    $('#container').highcharts({
+        chart: {
+            type: 'heatmap',
+            marginRight:30,
+            plotBorderWidth: 0,
+            style: {
+              fontFamily: 'Open Sans, Helvetica Neue, Helvetica, Verdana, Arial, sans-serif'
+            }
+        },
+        title: {
+            text: null,
+        },
+        subtitle: {enabled: false,},
+        xAxis: {
+            //INPUT: Categories/labels displayed on xAxis
+            categories: ["Camvert","SextransBois","BoisCam","SCIEB"],
+            title: null,
+            labels: {
+              style: {
+                fontSize: fontsize,
+              }
+            },
+            //Move the x-axis labels from its default position (bottom) to the top.
+            opposite: true,
+            lineWidth:0,
+            tickWidth: 0,
+        },
+
+        //INPUT: the labels on yAxis    
+        yAxis: {
+            categories: ["Mamoudou<br>Bobbo","Aboubakar<br>Al-Fathi","Mahmoud<br>Mourtada"],
+            title: null,
+            labels: {
+              style: {
+                fontSize: fontsize,
+              }
+            },
+        },
+
+        colorAxis: {
+            min: 0,
+            minColor: '#FFFFFF',
+            maxColor: Highcharts.getOptions().colors[0]
+        },
+
+        credits: {enabled: false,},
+        legend: {enabled: false,},
+
+        //Customize the default tooltip. Refer to the syntax at Highcharts API (http://api.highcharts.com/highcharts/tooltip.headerFormat, http://api.highcharts.com/highcharts/tooltip.pointFormat). Here we write a function to populate the tooltip based on the x-axis categories/labels.
+        tooltip: {
+            shared: false,  
+            useHTML: true,
+            formatter: function () {
+              if(this.point.label == ""){
+                return false;
+              } else {
+                if($(window).width() > 500){
+                  return this.point.label;
+                } else {
+                  return '<b>'+ this.point.value + '</b><br>' + this.point.label;
+                }
+              }
+              
+            }
+        },
+        series: [{
+            name: 'Legal Grounds',
+            borderWidth: 1,
+            borderColor: "#fff",
+            data: [
+              {x: 0, y: 0, color: "#c877b6", value:"Chief Manager<br>Officer",label:"Coordinates and carries out agricultural activities in Campo."},
+              {x: 0, y: 1, color: "#c877b6", value:"Co-Founder",label:"Main shareholder with 75% of the shares."},
+              {x: 0, y: 2, color: "#c877b6", value:"Co-founder &<br>Managing Director",label:"Holds 25% of the shares and supervises the activities."},
+              {x: 1, y: 0, color: "#fff", value:"",label:""},
+              {x: 1, y: 1, color: "#fff", value:"",label:""},
+              {x: 1, y: 2, color: "#b6c877", value:"General<br>Manager",label:"Monitored the activities from the forest to customers."},
+              {x: 2, y: 0, color: "#fff", value:"",label:""},
+              {x: 2, y: 1, color: "#c877b6", value:"Chief Executive<br>Officer",label:"Owner of the logging companies."},
+              {x: 2, y: 2, color: "#b6c877", value:"Legal Assistant",label:"Worked  on the legal documents and interacted with partners."},
+              {x: 3, y: 0, color: "#b6c877", value:"Project<br>Manager",label:"Planned and coordinated the implementation of projects."},
+              {x: 3, y: 1, color: "#c877b6", value:"Shareholder",label:"Bought SCIEB from the Dutch company Wijma."},
+              {x: 3, y: 2, color: "#fff", value:"",label:""},
+            ],
+            dataLabels: {
+                enabled: true,
+                color: '#ffffff',
+                useHTML: true,
+                formatter: function () {
+                  if($(window).width() > 500){
+                    return this.point.value;
+                  } else {
+                    return false;
+                  }
+                },
+                // y:0,
+                // x:-15,
+            }
+        }]
+    });
+//Function to move the x-axis labels back to its default position (bottom) when the width goes below a certain value.
+var chart = $('#container').highcharts();
+if($(window).width() < 340){
+  chart.xAxis[0].update({
+           opposite: false,
+  });
+}
+
+
+});
+</script>
