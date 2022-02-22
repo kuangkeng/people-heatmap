@@ -207,7 +207,7 @@ $(function () {
 //Function to move the x-axis labels back to its default position (bottom) when the width goes below a certain value.
 var chart = $('#container').highcharts();
 if($(window).width() < 340){
-  chart.xAxis[0].update({
+  chart.yAxis[0].update({
            opposite: false,
   });
 }
